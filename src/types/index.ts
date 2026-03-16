@@ -53,3 +53,29 @@ export interface OllamaConfig {
   baseUrl: string
   model: string
 }
+
+export interface FreesoundConfig {
+  apiKey: string
+}
+
+export interface SoundResult {
+  id: number
+  name: string
+  description: string
+  duration: number
+  username: string
+  license: string
+  previews: {
+    'high-quality': string
+    'low-quality': string
+  }
+  tags: string[]
+  type: string
+}
+
+export interface FreesoundSearchResponse {
+  count: number
+  next: string | null
+  previous: string | null
+  results: SoundResult[]
+}
