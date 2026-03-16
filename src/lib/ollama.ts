@@ -1,3 +1,5 @@
+import { getApiKeys } from './apiKeys';
+
 export interface GeneratedMission {
   title: string
   description: string
@@ -10,17 +12,25 @@ export interface OllamaResponse {
   response: string
 }
 
-export const OLLAMA_URL = 'http://localhost:11434/api/generate'
-
 export class OllamaService {
   private model: string
+  private url: string
 
-  constructor(config: { model: string } = { model: 'kimi-k2.5' }) {
-    this.model = config.model
+  constructor(config: { model?: string; url?: string } = { model: 'kimi-k2.5' }) {
+    this.model = config.model || 'kimi-k2.5'
+    this.url = config.url || 'http://localhost:11434/api/generate'
+  }
+
+  getUrl(): string {
+    return this.url
+  }
+
+  setUrl(url: string): void {
+    this.url = url
   }
 
   async generateMissionFromPrompt(prompt: string): Promise<GeneratedMission> {
-    const response = await fetch(OLLAMA_URL, {
+    const response = await fetch(this.url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -58,5 +68,15 @@ Antworte NUR im JSON-Format:
 // Convenience function for simple usage
 export async function generateMission(stichpunkte: string): Promise<GeneratedMission> {
   const service = new OllamaService()
+  return service.generateMissionFromPrompt(stichpunkte)
+}
+
+// Convenience function with saved config
+export async function generateMissionWithSavedConfig(stichpunkte: string): Promise<GeneratedMission> {
+  const keys = getApiKeys()
+  const service = new OllamaService({ 
+    model: 'kimi-k2.5',
+    url: keys.ollamaUrl || 'http://localhost:11434/api/generate'
+  })
   return service.generateMissionFromPrompt(stichpunkte)
 }

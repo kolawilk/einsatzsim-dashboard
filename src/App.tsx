@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
+import { Toaster } from "sonner"
 import Dashboard from "./pages/Dashboard"
 import MissionEditor from "./pages/MissionEditor"
 import SoundGenerator from "./pages/SoundGenerator"
 import MissionCreator from "./pages/MissionCreator"
 import SoundLibrary from "./pages/SoundLibrary"
+import Settings from "./pages/Settings"
 
 export default function App() {
   return (
@@ -32,6 +34,9 @@ export default function App() {
                 <Link to="/ai-creator" className="px-3 py-2 rounded-md hover:bg-accent">
                   AI Creator
                 </Link>
+                <Link to="/settings" className="px-3 py-2 rounded-md hover:bg-accent">
+                  Settings
+                </Link>
               </div>
             </div>
           </div>
@@ -45,8 +50,12 @@ export default function App() {
             <Route path="/sound-generator" element={<SoundGenerator />} />
             <Route path="/sound-library" element={<SoundLibrary />} />
             <Route path="/ai-creator" element={<MissionCreator />} />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>
+
+        {/* Toast Container */}
+        <Toaster position="top-right" richColors />
       </div>
     </BrowserRouter>
   )

@@ -1,3 +1,5 @@
+import { getApiKeys } from './apiKeys';
+
 export interface Voice {
   voice_id: string
   name: string
@@ -120,6 +122,17 @@ class ElevenLabsService {
     }
     const randomIndex = Math.floor(Math.random() * filtered.length)
     return filtered[randomIndex]
+  }
+
+  /**
+   * Get a default service instance with saved API key from localStorage
+   */
+  static withSavedConfig(): ElevenLabsService | null {
+    const keys = getApiKeys()
+    if (!keys.elevenLabs) {
+      return null
+    }
+    return new ElevenLabsService({ apiKey: keys.elevenLabs })
   }
 }
 

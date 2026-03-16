@@ -1,3 +1,5 @@
+import { getApiKeys } from './apiKeys';
+
 export interface SoundResult {
   id: number
   name: string
@@ -109,6 +111,17 @@ export class FreesoundService {
    */
   async previewSound(soundId: string): Promise<string> {
     return this.getSoundPreview(parseInt(soundId))
+  }
+
+  /**
+   * Get a default service instance with saved API key from localStorage
+   */
+  static withSavedConfig(): FreesoundService | null {
+    const keys = getApiKeys()
+    if (!keys.freesound) {
+      return null
+    }
+    return new FreesoundService({ apiKey: keys.freesound })
   }
 }
 
