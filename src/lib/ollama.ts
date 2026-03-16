@@ -29,13 +29,44 @@ export class OllamaService {
     this.url = url
   }
 
+  private isCloudUrl(): boolean {
+    // Cloud URLs contain 'api.ollama.com' in the domain
+    try {
+      const urlObj = new URL(this.url)
+      return urlObj.hostname === 'api.ollama.com'
+    } catch {
+      return this.url.includes('api.ollama.com')
+    }
+  }
+
   async generateMissionFromPrompt(prompt: string): Promise<GeneratedMission> {
-    const response = await fetch(this.url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: this.model,
-        prompt: `Erstelle eine Feuerwehr-Mission für Kinder (unter 6 Jahre) basierend auf: ${prompt}
+    // Detect if using Ollama Cloud or local
+    const isCloud = this.isCloudUrl()
+    
+    // Build headers
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+    
+    // For Cloud API: Add API key from headers
+    if (isCloud) {
+      const keys = getApiKeys()
+      if (keys.ollamaApiKey) {
+        headers['Authorization'] = `Bearer ${keys.ollamaApiKey}`
+      }
+    }
+    
+    // Determine endpoint
+    // For Cloud: the URL already contains /v1, append /chat/completions
+    // For Local: the URL should already include /api/generate
+    const endpoint = isCloud 
+      ? `${this.url}/chat/completions`
+      : this.url
+
+    // Build body based on API type
+    const body = {
+      model: this.model,
+      messages: [{
+        role: 'user',
+        content: `Erstelle eine Feuerwehr-Mission für Kinder (unter 6 Jahre) basierend auf: ${prompt}
 
 Antworte NUR im JSON-Format:
 {
@@ -44,23 +75,40 @@ Antworte NUR im JSON-Format:
   "caller_text": "Anrufertext für die Feuerwehr (1-2 Sätze, einfache Sprache)",
   "suggested_sounds": ["sound1", "sound2"],
   "difficulty": "easy"
-}`,
-        stream: false
-      })
+}`
+      }],
+      stream: false
+    }
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(body)
     })
 
     if (!response.ok) {
-      throw new Error(`Ollama error: ${response.status}`)
+      const errorText = await response.text()
+      throw new Error(`Ollama error: ${response.status} ${errorText}`)
     }
 
     const data = await response.json()
     
     // Parse JSON from response
     try {
-      const mission = JSON.parse(data.response)
+      // Cloud API returns { choices: [{ message: { content: '...' } }] }
+      // Local API returns { response: '...' }
+      const content = isCloud 
+        ? data.choices[0]?.message?.content
+        : data.response
+      
+      if (!content) {
+        throw new Error('No content in response')
+      }
+      
+      const mission = JSON.parse(content)
       return mission
-    } catch {
-      throw new Error('Invalid JSON response from Ollama')
+    } catch (parseError: any) {
+      throw new Error(`Invalid JSON response: ${parseError.message}`)
     }
   }
 }

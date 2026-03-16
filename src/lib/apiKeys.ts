@@ -4,6 +4,7 @@ export interface ApiKeys {
   elevenLabs?: string;
   freesound?: string;
   ollamaUrl: string;
+  ollamaApiKey?: string;
 }
 
 export function saveApiKeys(keys: ApiKeys): void {
@@ -24,7 +25,12 @@ export function getApiKeys(): ApiKeys {
       return { ollamaUrl: 'http://localhost:11434' };
     }
     const serialized = atob(encoded);
-    return JSON.parse(serialized);
+    const keys = JSON.parse(serialized);
+    // Ensure ollamaUrl always has a default
+    if (!keys.ollamaUrl) {
+      keys.ollamaUrl = 'http://localhost:11434';
+    }
+    return keys;
   } catch (error) {
     console.error('Error loading API keys:', error);
     return { ollamaUrl: 'http://localhost:11434' };

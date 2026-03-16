@@ -13,12 +13,14 @@ export default function Settings() {
   const [apiKeys, setApiKeys] = useState({
     elevenLabs: '',
     freesound: '',
-    ollamaUrl: 'http://localhost:11434'
+    ollamaUrl: 'http://localhost:11434',
+    ollamaApiKey: ''
   });
   const [savedKeys, setSavedKeys] = useState({
     elevenLabs: false,
     freesound: false,
-    ollamaUrl: false
+    ollamaUrl: false,
+    ollamaApiKey: false
   });
   const [testResults, setTestResults] = useState<{
     elevenLabs?: { success: boolean; message: string };
@@ -32,7 +34,8 @@ export default function Settings() {
     setApiKeys({
       elevenLabs: keys.elevenLabs || '',
       freesound: keys.freesound || '',
-      ollamaUrl: keys.ollamaUrl || 'http://localhost:11434'
+      ollamaUrl: keys.ollamaUrl || 'http://localhost:11434',
+      ollamaApiKey: keys.ollamaApiKey || ''
     });
   }, []);
 
@@ -47,12 +50,14 @@ export default function Settings() {
       saveApiKeys({
         elevenLabs: apiKeys.elevenLabs.trim() || undefined,
         freesound: apiKeys.freesound.trim() || undefined,
-        ollamaUrl: apiKeys.ollamaUrl.trim() || 'http://localhost:11434'
+        ollamaUrl: apiKeys.ollamaUrl.trim() || 'http://localhost:11434',
+        ollamaApiKey: apiKeys.ollamaApiKey.trim() || undefined
       });
       setSavedKeys({
         elevenLabs: true,
         freesound: true,
-        ollamaUrl: true
+        ollamaUrl: true,
+        ollamaApiKey: true
       });
       setTestResults({});
     } catch (error) {
@@ -291,6 +296,31 @@ export default function Settings() {
                 {loading && <RefreshCw className="w-4 h-4 mr-2 animate-spin" />}
                 Testen
               </Button>
+            </div>
+
+            {/* Ollama Cloud API Key */}
+            <div className="space-y-1">
+              <Label htmlFor="ollamaApiKey" className="text-sm font-medium">
+                Ollama Cloud API Key (optional)
+              </Label>
+              <p className="text-xs text-muted-foreground">
+                Für Ollama Cloud API Authentifizierung
+              </p>
+              <div className="flex gap-2">
+                <Input
+                  id="ollamaApiKey"
+                  type="password"
+                  value={apiKeys.ollamaApiKey}
+                  onChange={(e) => handleInputChange('ollamaApiKey', e.target.value)}
+                  placeholder="ollama-api-key"
+                  className="flex-1"
+                />
+              </div>
+              {apiKeys.ollamaApiKey && (
+                <p className="text-xs text-muted-foreground">
+                  {maskApiKey(apiKeys.ollamaApiKey)} - Für Cloud API
+                </p>
+              )}
             </div>
           </div>
 
