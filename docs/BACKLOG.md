@@ -33,17 +33,17 @@
 **Assignee**: dashboard-feat-004
 
 ### FEAT-005: KI-Mission-Creator (ollama)
-**Status**: 🟢 Done  
-**Beschreibung**: KI-gestützte Erstellung von Missionen via Ollama API  
+**Status**: 🟢 Done
+**Beschreibung**: KI-gestützte Erstellung von Missionen via Ollama API
 **Details**:
 - Stichpunkte eingeben → KI generiert Titel, Anrufertext, Sounds
 - KI schlägt passende Sounds vor
 - Direkt editierbar im Dashboard
-**Abhängigkeiten**: None  
+**Abhängigkeiten**: None
 **Assignee**: dashboard-feat-005
 
 ### FEAT-006: Mission-Editor
-**Status**: 🟡 In Progress  
+**Status**: 🟢 Done  
 **Beschreibung**: Formular zur Bearbeitung von Missionen  
 **Details**:
 - Alle Felder editierbar: id, name, description, difficulty, toys, states
@@ -54,14 +54,16 @@
 **Assignee**: dashboard-feat-006
 
 ### FEAT-007: YAML Export/Import
-**Status**: 🔴 To Do
-**Beschreibung**: Export/Import von Missionen als YAML-Dateien
-**Abhängigkeiten**: FEAT-001
+**Status**: 🟢 Done  
+**Beschreibung**: Export/Import von Missionen als YAML-Dateien  
+**Abhängigkeiten**: FEAT-001  
+**Assignee**: dashboard-feat-007
 
 ### FEAT-008: Dashboard-Layout mit shadcn
-**Status**: 🟢 Done
-**Beschreibung**: Modernes Dashboard mit shadcn/ui Komponenten
-**Abhängigkeiten**: None
+**Status**: 🟢 Done  
+**Beschreibung**: Modernes Dashboard mit shadcn/ui Komponenten  
+**Abhängigkeiten**: None  
+**Assignee**: Initial Setup
 
 ### FEAT-009: Freesound.org Integration
 **Status**: 🔴 To Do
