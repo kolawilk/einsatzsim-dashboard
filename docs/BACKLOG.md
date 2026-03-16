@@ -88,14 +88,29 @@
 - Felder: id, name, type, default_alerting_sound
 **Abhängigkeiten**: FEAT-010  
 
-### FEAT-012: Tags für Missionen
+### FEAT-013: Sound-Editor / Arrangement Konfigurator
 **Status**: 🔴 To Do  
-**Beschreibung**: Missionen können mit Tags versehen werden  
+**Beschreibung**: Visueller Editor für Sound-Arrangements pro State  
 **Details**:
-- Tags: "Nachteinsatz", "Winter", "Sommer", "Industrie", etc.
-- Filter nach Tags
-- Autocomplete bei Tag-Eingabe
+- Drag & Drop Interface für Sounds
+- Sound-Typen: sound_in, sound_out, sound_floor, sound_sequence, random_sounds
+- Timeline-Ansicht für Sequenzen
+- Volume/Pitch Einstellungen pro Sound
+- Random Sound Konfiguration (probability, interval)
+- Preview-Funktion für Arrangements
+- Sound-Bibliothek mit allen verfügbaren Sounds
 **Abhängigkeiten**: FEAT-006  
+
+### FEAT-014: Sound-Bibliothek Verwaltung
+**Status**: 🔴 To Do  
+**Beschreibung**: Verwaltung aller Sound-Dateien im Dashboard  
+**Details**:
+- Übersicht aller Sounds (alarm/, effects/, calls/)
+- Upload neuer Sounds
+- Löschen von Sounds
+- Vorschau/Abspielen
+- Metadaten: Kategorie, Dauer, Tags
+**Abhängigkeiten**: None  
 
 ## Bug Reports
 
