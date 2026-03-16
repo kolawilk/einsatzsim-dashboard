@@ -14,7 +14,7 @@ export function getLastId(): number {
 }
 
 export function migrateExistingIds(missions: any[]): any[] {
-  return missions.map((mission, index) => ({
+  return missions.map((mission) => ({
     ...mission,
     id: mission.id || generateMissionId(),
     legacy_id: mission.id // Keep old ID as reference
