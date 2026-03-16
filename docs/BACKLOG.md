@@ -27,13 +27,13 @@
 **Assignee**: dashboard-feat-003
 
 ### FEAT-004: Sound-Generator UI
-**Status**: 🟢 Done  
-**Beschreibung**: Benutzeroberfläche für Sound-Generation mit Status-Anzeige  
-**Abhängigkeiten**: FEAT-003  
+**Status**: 🟢 Done
+**Beschreibung**: Benutzeroberfläche für Sound-Generation mit Status-Anzeige
+**Abhängigkeiten**: FEAT-003
 **Assignee**: dashboard-feat-004
 
 ### FEAT-005: KI-Mission-Creator (ollama)
-**Status**: 🟡 In Progress  
+**Status**: 🟢 Done  
 **Beschreibung**: KI-gestützte Erstellung von Missionen via Ollama API  
 **Details**:
 - Stichpunkte eingeben → KI generiert Titel, Anrufertext, Sounds
@@ -43,14 +43,15 @@
 **Assignee**: dashboard-feat-005
 
 ### FEAT-006: Mission-Editor
-**Status**: 🔴 To Do
-**Beschreibung**: Formular zur Bearbeitung von Missionen
+**Status**: 🟡 In Progress  
+**Beschreibung**: Formular zur Bearbeitung von Missionen  
 **Details**:
 - Alle Felder editierbar: id, name, description, difficulty, toys, states
 - **Gender-Auswahl für Anruf**: männlich/weiblich/egal
 - State-Editor mit Sound-Auswahl
 - Live-Preview von Anrufertexten
-**Abhängigkeiten**: FEAT-001
+**Abhängigkeiten**: FEAT-001  
+**Assignee**: dashboard-feat-006
 
 ### FEAT-007: YAML Export/Import
 **Status**: 🔴 To Do
