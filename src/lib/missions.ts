@@ -1,12 +1,30 @@
 import * as yaml from 'js-yaml';
 import type { MissingSound } from './soundScanner';
 
+export interface MissionState {
+  sound_in?: string;
+  sound_out?: string;
+  sound_floor?: string;
+  sound_sequence?: string;
+}
+
+export interface MissionStates {
+  calling: MissionState;
+  alerting: MissionState;
+  deploying: MissionState;
+  arrived: MissionState;
+  returning: MissionState;
+}
+
 export interface Mission {
   id: string;
   name: string;
   category: string;
-  difficulty: string;
+  difficulty: 'easy' | 'medium' | 'hard' | 'critical';
   description: string;
+  caller_gender: 'male' | 'female' | 'any';
+  toys: string[];
+  states: MissionStates;
   sounds: MissionSound[];
   createdAt: string;
   updatedAt: string;
@@ -32,6 +50,14 @@ export interface MissionStore {
   getMissingSoundsPerMission: () => { [missionId: string]: number };
 }
 
+const INITIAL_STATES: MissionStates = {
+  calling: {},
+  alerting: {},
+  deploying: {},
+  arrived: {},
+  returning: {},
+};
+
 const store: MissionStore = {
   missions: [],
   
@@ -40,12 +66,20 @@ const store: MissionStore = {
   },
   
   addMission(mission) {
+    // Ensure states exist with defaults
+    if (!mission.states) {
+      mission.states = INITIAL_STATES;
+    }
     this.missions.push(mission);
   },
   
   updateMission(mission) {
     const index = this.missions.findIndex(m => m.id === mission.id);
     if (index !== -1) {
+      // Ensure states exist with defaults
+      if (!mission.states) {
+        mission.states = INITIAL_STATES;
+      }
       this.missions[index] = mission;
     }
   },
@@ -120,7 +154,11 @@ export async function loadMissionsFromYaml(): Promise<void> {
     const data = yaml.load(yamlText) as { missions: Mission[] };
     
     if (data && Array.isArray(data.missions)) {
-      store.missions = data.missions;
+      // Ensure all missions have states with defaults
+      store.missions = data.missions.map(mission => ({
+        ...mission,
+        states: mission.states || INITIAL_STATES,
+      }));
     }
   } catch (error) {
     console.error('Error loading missions from YAML:', error);
