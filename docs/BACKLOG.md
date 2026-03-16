@@ -9,13 +9,13 @@
 **Assignee**: dashboard-feat-001-retry
 
 ### FEAT-002: Fehlende Sounds identifizieren
-**Status**: 🟢 Done  
-**Beschreibung**: Automatische Erkennung von fehlenden Sounds in Missionen  
-**Abhängigkeiten**: FEAT-001  
+**Status**: 🟢 Done
+**Beschreibung**: Automatische Erkennung von fehlenden Sounds in Missionen
+**Abhängigkeiten**: FEAT-001
 **Assignee**: dashboard-feat-002
 
 ### FEAT-003: ElevenLabs TTS Integration
-**Status**: 🟡 In Progress  
+**Status**: 🟢 Done  
 **Beschreibung**: API-Integration für Text-to-Speech mit ElevenLabs  
 **Details**:
 - Multilingual Modell verwenden
@@ -27,9 +27,10 @@
 **Assignee**: dashboard-feat-003
 
 ### FEAT-004: Sound-Generator UI
-**Status**: 🔴 To Do
-**Beschreibung**: Benutzeroberfläche für Sound-Generation mit Status-Anzeige
-**Abhängigkeiten**: FEAT-003
+**Status**: 🟡 In Progress  
+**Beschreibung**: Benutzeroberfläche für Sound-Generation mit Status-Anzeige  
+**Abhängigkeiten**: FEAT-003  
+**Assignee**: dashboard-feat-004
 
 ### FEAT-005: KI-Mission-Creator (ollama)
 **Status**: 🔴 To Do
