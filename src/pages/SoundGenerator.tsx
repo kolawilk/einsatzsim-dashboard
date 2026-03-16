@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
 
 export default function SoundGenerator() {
   const [missingSounds, setMissingSounds] = useState([
@@ -29,7 +28,7 @@ export default function SoundGenerator() {
       <Card>
         <CardHeader>
           <CardTitle>Missing Sounds</CardTitle>
-          <CardDescription>{missingSounds.filter(s => s.status === "pending").length} Sounds需要 ElevenLabs TTS</CardDescription>
+          <CardDescription>{missingSounds.filter(s => s.status === "pending").length} Sounds benötigen ElevenLabs TTS</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4 mb-6">

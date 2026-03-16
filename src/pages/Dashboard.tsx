@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useMissions } from '@/hooks/useMissions';
+import { AlertCircle } from 'lucide-react';
 
 // Status Badge Component
 function StatusBadge({ status }: { status: 'pending' | 'generated' | 'missing' }) {
@@ -56,13 +57,43 @@ function EditButton({ id }: { id: string }) {
   );
 }
 
+// Missing Sounds Badge Component
+function MissingSoundsBadge({ count }: { count: number }) {
+  if (count === 0) {
+    return (
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+        ✓ alle Sounds
+      </span>
+    );
+  }
+  
+  return (
+    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+      <AlertCircle className="w-3 h-3 mr-1" />
+      {count} fehlend
+    </span>
+  );
+}
+
 export default function Dashboard() {
   const { missions, isLoading, error, getSoundStatusCount } = useMissions();
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [missingPerMission, setMissingPerMission] = useState<{ [missionId: string]: number }>({});
 
   useEffect(() => {
     setHasLoaded(!isLoading);
-  }, [isLoading]);
+    // Update missing sounds counts when missions change
+    const counts = missions.reduce((acc, mission) => {
+      const count = mission.sounds.filter(
+        sound => sound.status === 'missing' || sound.status === 'pending'
+      ).length;
+      if (count > 0) {
+        acc[mission.id] = count;
+      }
+      return acc;
+    }, {} as { [missionId: string]: number });
+    setMissingPerMission(counts);
+  }, [isLoading, missions]);
 
   const soundCounts = getSoundStatusCount();
 
@@ -193,6 +224,7 @@ export default function Dashboard() {
                     <th className="p-3 font-semibold">Kategorie</th>
                     <th className="p-3 font-semibold">Schwierigkeit</th>
                     <th className="p-3 font-semibold">Sounds</th>
+                    <th className="p-3 font-semibold">Status</th>
                     <th className="p-3 font-semibold">Erstellt</th>
                     <th className="p-3 font-semibold">Aktionen</th>
                   </tr>
@@ -222,6 +254,9 @@ export default function Dashboard() {
                         <div className="text-xs text-muted-foreground mt-2">
                           {mission.sounds.length} Sounds insgesamt
                         </div>
+                      </td>
+                      <td className="p-3">
+                        <MissingSoundsBadge count={missingPerMission[mission.id] || 0} />
                       </td>
                       <td className="p-3 text-sm text-muted-foreground">
                         {new Date(mission.createdAt).toLocaleDateString('de-DE')}
