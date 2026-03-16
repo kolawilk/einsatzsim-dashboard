@@ -3,15 +3,16 @@
 ## Features (Priorisiert)
 
 ### FEAT-001: Mission-Liste anzeigen (aus missions.yaml)
-**Status**: 🟡 In Progress  
+**Status**: 🟢 Done  
 **Beschreibung**: Anzeige aller gespeicherten Missionen mit Filter und Suche  
 **Abhängigkeiten**: None  
-**Assignee**: dashboard-feat-001
+**Assignee**: dashboard-feat-001-retry
 
 ### FEAT-002: Fehlende Sounds identifizieren
-**Status**: 🔴 To Do  
+**Status**: 🟡 In Progress  
 **Beschreibung**: Automatische Erkennung von fehlenden Sounds in Missionen  
 **Abhängigkeiten**: FEAT-001  
+**Assignee**: dashboard-feat-002  
 
 ### FEAT-003: ElevenLabs TTS Integration
 **Status**: 🔴 To Do  
