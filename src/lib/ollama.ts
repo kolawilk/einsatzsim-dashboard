@@ -1,82 +1,58 @@
-export interface OllamaConfig {
-  baseUrl: string
-  model: string
+export interface GeneratedMission {
+  title: string
+  description: string
+  caller_text: string
+  suggested_sounds: string[]
+  difficulty: 'easy' | 'medium' | 'hard'
 }
 
-export interface OllamaOptions {
-  prompt: string
-  systemPrompt?: string
-  temperature?: number
-  maxTokens?: number
+export interface OllamaResponse {
+  response: string
 }
 
-class OllamaService {
-  private config: OllamaConfig
+export const OLLAMA_URL = 'http://localhost:11434/api/generate'
 
-  constructor(config: OllamaConfig) {
-    this.config = config
-  }
+export class OllamaService {
+  constructor(private config: { model: string } = { model: 'kimi-k2.5' }) {}
 
-  async generateMission(options: OllamaOptions): Promise<string | null> {
-    const url = `${this.config.baseUrl}/api/generate`
-    
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: this.config.model,
-          prompt: options.systemPrompt 
-            ? `${options.systemPrompt}\n\n${options.prompt}`
-            : options.prompt,
-          temperature: options.temperature ?? 0.7,
-          stream: false,
-        }),
+  async generateMissionFromPrompt(prompt: string): Promise<GeneratedMission> {
+    const response = await fetch(OLLAMA_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: this.config.model,
+        prompt: `Erstelle eine Feuerwehr-Mission für Kinder (unter 6 Jahre) basierend auf: ${prompt}
+
+Antworte NUR im JSON-Format:
+{
+  "title": "Kurzer Titel (max 5 Wörter)",
+  "description": "Beschreibung für Kinder (2-3 Sätze)",
+  "caller_text": "Anrufertext für die Feuerwehr (1-2 Sätze, einfache Sprache)",
+  "suggested_sounds": ["sound1", "sound2"],
+  "difficulty": "easy"
+}`,
+        stream: false
       })
+    })
 
-      if (!response.ok) {
-        throw new Error(`Ollama API error: ${response.status}`)
-      }
+    if (!response.ok) {
+      throw new Error(`Ollama error: ${response.status}`)
+    }
 
-      const data = await response.json()
-      return data.response
-    } catch (error) {
-      console.error("Error generating mission:", error)
-      return null
+    const data = await response.json()
+    
+    // Parse JSON from response
+    try {
+      const mission = JSON.parse(data.response)
+      return mission
+    } catch {
+      throw new Error('Invalid JSON response from Ollama')
     }
   }
-
-  async generateMissionFromPrompt(prompt: string): Promise<string | null> {
-    const systemPrompt = `Du bist ein Experte für Einsatzsimulator-Missionen. Erstelle detaillierte, realistische Missionen im YAML-Format für einen Rettungsdienst- oder Feuerwehreinsatzsimulator. 
-
-Formatiere deine Antwort als valides YAML mit folgender Struktur:
-
-# Mission: [Name]
-## Szenario
-[Beschreibung des Szenarios]
-
-## Einsatzkräfte
-[ Liste der Einsatzkräfte mit-personen ]
-
-## Abarbeitung
-1. [Schritt 1]
-2. [Schritt 2]
-3. [Schritt 3]
-
-## Ausrüstung
-- [Ausrüstung 1]
-- [Ausrüstung 2]
-
-Sei präzise und realistisch.`
-
-    return this.generateMission({
-      prompt,
-      systemPrompt,
-      temperature: 0.7,
-    })
-  }
 }
 
-export default OllamaService
+// Convenience function for simple usage
+export async function generateMission(stichpunkte: string): Promise<GeneratedMission> {
+  const service = new OllamaService()
+  return service.generateMissionFromPrompt(stichpunkte)
+}

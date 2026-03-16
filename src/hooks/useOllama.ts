@@ -1,37 +1,37 @@
-import { useState, useEffect, useCallback } from 'react';
-import type { OllamaConfig } from '@/lib/ollama';
-import OllamaService from '@/lib/ollama';
+import { useState } from 'react'
+import { generateMission, GeneratedMission } from '@/lib/ollama'
 
-export function useOllama(config: OllamaConfig) {
-  const [service, setService] = useState<OllamaService | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export function useOllama() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [generatedMission, setGeneratedMission] = useState<GeneratedMission | null>(null)
 
-  useEffect(() => {
-    const serviceInstance = new OllamaService(config);
-    setService(serviceInstance);
-  }, [config]);
-
-  const generateMission = useCallback(async (prompt: string): Promise<string | null> => {
-    if (!service) return null;
-    
-    setIsLoading(true);
-    setError(null);
+  const generate = async (stichpunkte: string) => {
+    setIsLoading(true)
+    setError(null)
     
     try {
-      const mission = await service.generateMissionFromPrompt(prompt);
-      return mission;
+      const mission = await generateMission(stichpunkte)
+      setGeneratedMission(mission)
+      return mission
     } catch (err) {
-      setError('Failed to generate mission');
-      return null;
+      setError(err instanceof Error ? err.message : 'Unknown error')
+      return null
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  }, [service]);
+  }
+
+  const reset = () => {
+    setGeneratedMission(null)
+    setError(null)
+  }
 
   return {
+    generate,
+    reset,
     isLoading,
     error,
-    generateMission,
-  };
+    generatedMission
+  }
 }

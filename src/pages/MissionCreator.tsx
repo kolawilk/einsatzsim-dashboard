@@ -3,42 +3,30 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { useOllama } from "@/hooks/useOllama"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export default function MissionCreator() {
   const [prompt, setPrompt] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [generatedMission, setGeneratedMission] = useState<string | null>(null)
+  const [editedMission, setEditedMission] = useState<any>(null)
+  const { generate, isLoading, error, generatedMission, reset } = useOllama()
 
-  const handleGenerateMission = () => {
-    setIsLoading(true)
-    // Simuliere KI-generierte Mission
-    setTimeout(() => {
-      setGeneratedMission(`
-# Mission: Waldbrand an der Autobahn
+  const handleGenerate = async () => {
+    const mission = await generate(prompt)
+    if (mission) {
+      setEditedMission(mission)
+    }
+  }
 
-## Szenario
-Es ist ein großer Waldbrand an der Autobahn ausgebrochen. Die Flammen greifen auf mehrere Hektar um sich. Mehrere Fahrzeuge stehen in der Gefahr, vom Feuer eingeholt zu werden.
+  const handleEdit = (field: string, value: string) => {
+    setEditedMission({ ...editedMission, [field]: value })
+  }
 
-## Einsatzkräfte
-- LF 20: 12 Mann
-- DLK 23: 3 Mann
-- RW: 6 Mann
-- Einsatzleitung: 2 Mann
-
-## Abarbeitung
-1. Aufbau einer Wassertransportleitung
-2. Rettung der Fahrzeuge
-3. Flugsicherung einschalten
-5. Bekämpfung des Brandes von beiden Seiten
-
-## Ausrüstung
-- Atemschutzgeräte
-- Schaummittel
-- Leitungen 40mm
-- Strömungsrohre
-`)
-      setIsLoading(false)
-    }, 2500)
+  const handleSave = () => {
+    // TODO: Save to YAML
+    console.log("Saving mission:", editedMission)
+    alert("Mission saved! (Console log)")
   }
 
   return (
@@ -55,35 +43,86 @@ Es ist ein großer Waldbrand an der Autobahn ausgebrochen. Die Flammen greifen a
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="prompt">Prompt</Label>
+            <Label htmlFor="prompt">Stichpunkte</Label>
             <Textarea
               id="prompt"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              placeholder="z.B. 'Großbrand in einem Lagerhaus mit mehreren betroffenen Fahrzeugen und eingeklemmten Personen'"
+              placeholder="z.B. 'Großbrand in einem Lagerhaus mit mehreren betroffenen Fahrzeugen'"
               className="min-h-[100px]"
             />
           </div>
 
-          <Button onClick={handleGenerateMission} disabled={isLoading}>
-            {isLoading ? "Generating..." : "Generate Mission"}
+          <Button onClick={handleGenerate} disabled={isLoading || !prompt}>
+            {isLoading ? "Generiere..." : "Mission generieren"}
           </Button>
+
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
         </CardContent>
       </Card>
 
-      {generatedMission && (
+      {editedMission && (
         <Card>
           <CardHeader>
-            <CardTitle>Generated Mission</CardTitle>
-            <CardDescription>KI generierte Mission</CardDescription>
+            <CardTitle>Generierte Mission (editierbar)</CardTitle>
+            <CardDescription>Alle Felder können bearbeitet werden</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="bg-muted p-4 rounded-lg font-mono text-sm whitespace-pre-wrap">
-              {generatedMission}
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label>Titel</Label>
+              <Input
+                value={editedMission.title}
+                onChange={(e) => handleEdit("title", e.target.value)}
+              />
             </div>
-            <div className="flex justify-end gap-2 mt-4">
-              <Button variant="outline">Copy</Button>
-              <Button>Edit</Button>
+
+            <div className="space-y-2">
+              <Label>Beschreibung</Label>
+              <Textarea
+                value={editedMission.description}
+                onChange={(e) => handleEdit("description", e.target.value)}
+                className="min-h-[80px]"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Anrufertext</Label>
+              <Textarea
+                value={editedMission.caller_text}
+                onChange={(e) => handleEdit("caller_text", e.target.value)}
+                className="min-h-[80px]"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Schwierigkeit</Label>
+              <select
+                value={editedMission.difficulty}
+                onChange={(e) => handleEdit("difficulty", e.target.value)}
+                className="w-full p-2 border rounded"
+              >
+                <option value="easy">Einfach</option>
+                <option value="medium">Mittel</option>
+                <option value="hard">Schwer</option>
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Vorgeschlagene Sounds</Label>
+              <Input
+                value={editedMission.suggested_sounds?.join(", ")}
+                onChange={(e) => handleEdit("suggested_sounds", e.target.value.split(", "))}
+                placeholder="Komma-getrennt"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-4">
+              <Button variant="outline" onClick={reset}>Zurücksetzen</Button>
+              <Button onClick={handleSave}>Mission speichern</Button>
             </div>
           </CardContent>
         </Card>
