@@ -94,7 +94,7 @@
 **Details**:
 - Drag & Drop Interface für Sounds
 - Sound-Typen: sound_in, sound_out, sound_floor, sound_sequence, random_sounds
-- Timeline-Ansicht für Sequenzen
+- Sequenz-Editor (Reihenfolge festlegen)
 - Volume/Pitch Einstellungen pro Sound
 - Random Sound Konfiguration (probability, interval)
 - Preview-Funktion für Arrangements
