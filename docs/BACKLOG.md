@@ -1,35 +1,51 @@
 # BACKLOG - Mission Manager Dashboard
 
-## Features
+## Features (Priorisiert)
 
 ### FEAT-001: Mission-Liste anzeigen (aus missions.yaml)
-**Status**: 🟢 Done  
+**Status**: 🟡 In Progress  
 **Beschreibung**: Anzeige aller gespeicherten Missionen mit Filter und Suche  
-**Abhängigkeiten**: FEAT-008  
+**Abhängigkeiten**: None  
+**Assignee**: dashboard-feat-001
 
 ### FEAT-002: Fehlende Sounds identifizieren
-**Status**: 🟡 In Progress  
+**Status**: 🔴 To Do  
 **Beschreibung**: Automatische Erkennung von fehlenden Sounds in Missionen  
 **Abhängigkeiten**: FEAT-001  
 
 ### FEAT-003: ElevenLabs TTS Integration
-**Status**: 🟢 Done  
+**Status**: 🔴 To Do  
 **Beschreibung**: API-Integration für Text-to-Speech mit ElevenLabs  
+**Details**:
+- Multilingual Modell verwenden
+- Geschlecht-Auswahl: männlich/weiblich/egal
+- Bei "egal": Zufällige passende Stimme auswählen
+- Voice-Preview vor Generierung
+- **Gender-Feld in YAML**: `caller_gender: "male" | "female" | "any"`
 **Abhängigkeiten**: None  
 
 ### FEAT-004: Sound-Generator UI
-**Status**: 🟢 Done  
+**Status**: 🔴 To Do  
 **Beschreibung**: Benutzeroberfläche für Sound-Generation mit Status-Anzeige  
 **Abhängigkeiten**: FEAT-003  
 
 ### FEAT-005: KI-Mission-Creator (ollama)
-**Status**: 🟢 Done  
+**Status**: 🔴 To Do  
 **Beschreibung**: KI-gestützte Erstellung von Missionen via Ollama API  
+**Details**:
+- Stichpunkte eingeben → KI generiert Titel, Anrufertext, Sounds
+- KI schlägt passende Sounds vor
+- Direkt editierbar im Dashboard
 **Abhängigkeiten**: None  
 
 ### FEAT-006: Mission-Editor
-**Status**: 🟢 Done  
+**Status**: 🔴 To Do  
 **Beschreibung**: Formular zur Bearbeitung von Missionen  
+**Details**:
+- Alle Felder editierbar: id, name, description, difficulty, toys, states
+- **Gender-Auswahl für Anruf**: männlich/weiblich/egal
+- State-Editor mit Sound-Auswahl
+- Live-Preview von Anrufertexten
 **Abhängigkeiten**: FEAT-001  
 
 ### FEAT-007: YAML Export/Import
@@ -42,11 +58,48 @@
 **Beschreibung**: Modernes Dashboard mit shadcn/ui Komponenten  
 **Abhängigkeiten**: None  
 
+### FEAT-009: Freesound.org Integration
+**Status**: 🔴 To Do  
+**Beschreibung**: Automatische Sound-Suche bei freesound.org  
+**Details**:
+- KI schlägt Sounds vor (aus FEAT-005)
+- Prüfung ob Sound lokal vorhanden
+- Falls nicht: Anfrage an freesound.org
+- Im Dashboard anhören und auswählen
+- Download und Speicherung
+**Abhängigkeiten**: FEAT-005  
+
+### FEAT-010: Neue ID-Struktur für Missionen
+**Status**: 🔴 To Do  
+**Beschreibung**: Numerische IDs statt Einsatzstichwort-basiert  
+**Details**:
+- Migration bestehender Missionen
+- Neue Missionen bekommen auto-increment IDs
+- Einsatzstichwort wird separates Feld
+**Abhängigkeiten**: FEAT-001  
+
+### FEAT-011: Einsatzstichwort-Verwaltung
+**Status**: 🔴 To Do  
+**Beschreibung**: YAML-basierte Stichwort-Liste mit Types  
+**Details**:
+- Stichworte aus Liste wählen
+- Types: Feuerwehr, Rettungsdienst, THL, etc.
+- Stichwort bestimmt alerting Sound
+- Felder: id, name, type, default_alerting_sound
+**Abhängigkeiten**: FEAT-010  
+
+### FEAT-012: Tags für Missionen
+**Status**: 🔴 To Do  
+**Beschreibung**: Missionen können mit Tags versehen werden  
+**Details**:
+- Tags: "Nachteinsatz", "Winter", "Sommer", "Industrie", etc.
+- Filter nach Tags
+- Autocomplete bei Tag-Eingabe
+**Abhängigkeiten**: FEAT-006  
+
 ## Bug Reports
 
-### BUG-001: Tailwind CSS Konfiguration fehlt
-**Status**: 🟢 Fixed  
-**Beschreibung**: Tailwind Konfiguration wurde manuell erstellt  
+*Keine offenen Bugs*
 
 ## Tasks
 
@@ -55,15 +108,17 @@
 **Beschreibung**: Vite + React + TypeScript Setup  
 
 ### TASK-002: shadcn/ui installieren
-**Status**: 🟡 Manual Install  
-**Beschreibung**: shadcn Komponenten manuell installiert  
-
-### TASK-003: erste Komponenten erstellen
 **Status**: 🟢 Done  
-**Beschreibung**: Button, Card, Input, Label, Textarea  
+**Beschreibung**: shadcn Komponenten installiert  
+
+### TASK-003: GitHub Repo erstellen
+**Status**: 🔴 To Do  
+**Beschreibung**: Repo `kolawilk/einsatzsim-dashboard` anlegen  
+**Assignee**: Lars
 
 ## Notes
 
 - ElevenLabs API Key erforderlich für TTS-Funktionalität
 - Ollama Server muss lokal laufen für KI-Creator
+- Freesound.org API Key für Sound-Suche
 - YAML-Format für Missionsdateien wird verwendet
