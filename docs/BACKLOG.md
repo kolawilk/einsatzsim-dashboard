@@ -106,7 +106,8 @@
 **Beschreibung**: Verwaltung aller Sound-Dateien im Dashboard  
 **Details**:
 - Übersicht aller Sounds (alarm/, effects/, calls/)
-- Upload neuer Sounds
+- **Drag & Drop Upload vom Filesystem**
+- Automatische Speicherung in korrektem Ordner
 - Löschen von Sounds
 - Vorschau/Abspielen
 - Metadaten: Kategorie, Dauer, Tags
