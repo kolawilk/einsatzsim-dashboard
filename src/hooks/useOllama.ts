@@ -1,37 +1,43 @@
-import { useState } from 'react'
-import { generateMission, GeneratedMission } from '@/lib/ollama'
+import { useState, useEffect, useCallback } from 'react';
+import type { GeneratedMission } from '@/lib/ollama';
+import { OllamaService } from '@/lib/ollama';
 
-export function useOllama() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [generatedMission, setGeneratedMission] = useState<GeneratedMission | null>(null)
+interface UseOllamaReturn {
+  isLoading: boolean;
+  error: string | null;
+  generateMission: (prompt: string) => Promise<GeneratedMission | null>;
+}
 
-  const generate = async (stichpunkte: string) => {
-    setIsLoading(true)
-    setError(null)
+export function useOllama(): UseOllamaReturn {
+  const [service, setService] = useState<OllamaService | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const serviceInstance = new OllamaService();
+    setService(serviceInstance);
+  }, []);
+
+  const generateMission = useCallback(async (prompt: string): Promise<GeneratedMission | null> => {
+    if (!service) return null;
+    
+    setIsLoading(true);
+    setError(null);
     
     try {
-      const mission = await generateMission(stichpunkte)
-      setGeneratedMission(mission)
-      return mission
+      const mission = await service.generateMissionFromPrompt(prompt);
+      return mission;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error')
-      return null
+      setError('Fehler beim Generieren der Mission. Ist Ollama gestartet?');
+      return null;
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
-
-  const reset = () => {
-    setGeneratedMission(null)
-    setError(null)
-  }
+  }, [service]);
 
   return {
-    generate,
-    reset,
     isLoading,
     error,
-    generatedMission
-  }
+    generateMission,
+  };
 }

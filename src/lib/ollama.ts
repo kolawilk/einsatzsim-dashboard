@@ -13,14 +13,18 @@ export interface OllamaResponse {
 export const OLLAMA_URL = 'http://localhost:11434/api/generate'
 
 export class OllamaService {
-  constructor(private config: { model: string } = { model: 'kimi-k2.5' }) {}
+  private model: string
+
+  constructor(config: { model: string } = { model: 'kimi-k2.5' }) {
+    this.model = config.model
+  }
 
   async generateMissionFromPrompt(prompt: string): Promise<GeneratedMission> {
     const response = await fetch(OLLAMA_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: this.config.model,
+        model: this.model,
         prompt: `Erstelle eine Feuerwehr-Mission für Kinder (unter 6 Jahre) basierend auf: ${prompt}
 
 Antworte NUR im JSON-Format:
