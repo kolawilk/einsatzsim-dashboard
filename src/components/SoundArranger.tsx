@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GripVertical, Plus, Trash2, Volume2 } from 'lucide-react';
+import { Plus, Trash2, Volume2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
@@ -116,7 +116,7 @@ export function SoundArranger({ sounds, onChange }: SoundArrangerProps) {
               <Volume2 className="h-4 w-4 text-muted-foreground" />
               <Slider
                 value={[sound.volume]}
-                onValueChange={([v]) => updateSound(sound.id, { volume: v })}
+                onValueChange={(value) => updateSound(sound.id, { volume: value[0] })}
                 max={100}
                 step={5}
                 className="w-20"
