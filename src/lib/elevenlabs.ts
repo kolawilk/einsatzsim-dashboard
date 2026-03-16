@@ -1,6 +1,18 @@
+export interface Voice {
+  voice_id: string
+  name: string
+  category: string
+  labels?: {
+    accent?: string
+    description?: string
+    gender?: string
+    age?: string
+  }
+}
+
 export interface ElevenLabsConfig {
   apiKey: string
-  voiceId: string
+  voiceId?: string
   modelId?: string
 }
 
@@ -10,6 +22,11 @@ export interface ElevenLabsOptions {
   modelId?: string
   stability?: number
   similarityBoost?: number
+}
+
+export interface GenderVoiceFilter {
+  gender: 'male' | 'female' | 'any'
+  voices: Voice[]
 }
 
 class ElevenLabsService {
@@ -51,7 +68,7 @@ class ElevenLabsService {
     }
   }
 
-  async getVoices() {
+  async getVoices(): Promise<Voice[]> {
     try {
       const response = await fetch("https://api.elevenlabs.io/v1/voices", {
         headers: {
@@ -64,11 +81,45 @@ class ElevenLabsService {
       }
 
       const data = await response.json()
-      return data.voices
+      return data.voices || []
     } catch (error) {
       console.error("Error fetching voices:", error)
       return []
     }
+  }
+
+  /**
+   * Filter voices by gender
+   */
+  filterVoicesByGender(voices: Voice[], gender: 'male' | 'female' | 'any'): Voice[] {
+    if (gender === 'any') {
+      return voices
+    }
+    
+    return voices.filter(voice => {
+      const voiceGender = voice.labels?.gender?.toLowerCase()
+      if (!voiceGender) return true // Fallback: wenn keine Gender-Info vorhanden, stimme miteinschließen
+      
+      if (gender === 'male') {
+        return voiceGender.includes('male') || voiceGender.includes('männlich') || voiceGender.includes('mann')
+      }
+      if (gender === 'female') {
+        return voiceGender.includes('female') || voiceGender.includes('weiblich') || voiceGender.includes('frau')
+      }
+      return true
+    })
+  }
+
+  /**
+   * Get a random voice from filtered list
+   */
+  getRandomVoice(voices: Voice[], gender: 'male' | 'female' | 'any'): Voice | null {
+    const filtered = this.filterVoicesByGender(voices, gender)
+    if (filtered.length === 0) {
+      return null
+    }
+    const randomIndex = Math.floor(Math.random() * filtered.length)
+    return filtered[randomIndex]
   }
 }
 
