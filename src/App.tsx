@@ -3,6 +3,7 @@ import Dashboard from "./pages/Dashboard"
 import MissionEditor from "./pages/MissionEditor"
 import SoundGenerator from "./pages/SoundGenerator"
 import MissionCreator from "./pages/MissionCreator"
+import SoundLibrary from "./pages/SoundLibrary"
 
 export default function App() {
   return (
@@ -25,6 +26,9 @@ export default function App() {
                 <Link to="/sound-generator" className="px-3 py-2 rounded-md hover:bg-accent">
                   Sound Generator
                 </Link>
+                <Link to="/sound-library" className="px-3 py-2 rounded-md hover:bg-accent">
+                  Sound Library
+                </Link>
                 <Link to="/ai-creator" className="px-3 py-2 rounded-md hover:bg-accent">
                   AI Creator
                 </Link>
@@ -39,6 +43,7 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/missions" element={<MissionEditor />} />
             <Route path="/sound-generator" element={<SoundGenerator />} />
+            <Route path="/sound-library" element={<SoundLibrary />} />
             <Route path="/ai-creator" element={<MissionCreator />} />
           </Routes>
         </main>
