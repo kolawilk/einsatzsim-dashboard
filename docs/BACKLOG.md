@@ -15,31 +15,32 @@
 **Assignee**: dashboard-feat-002
 
 ### FEAT-003: ElevenLabs TTS Integration
-**Status**: 🟢 Done  
-**Beschreibung**: API-Integration für Text-to-Speech mit ElevenLabs  
+**Status**: 🟢 Done
+**Beschreibung**: API-Integration für Text-to-Speech mit ElevenLabs
 **Details**:
 - Multilingual Modell verwenden
 - Geschlecht-Auswahl: männlich/weiblich/egal
 - Bei "egal": Zufällige passende Stimme auswählen
 - Voice-Preview vor Generierung
 - **Gender-Feld in YAML**: `caller_gender: "male" | "female" | "any"`
-**Abhängigkeiten**: None  
+**Abhängigkeiten**: None
 **Assignee**: dashboard-feat-003
 
 ### FEAT-004: Sound-Generator UI
-**Status**: 🟡 In Progress  
+**Status**: 🟢 Done  
 **Beschreibung**: Benutzeroberfläche für Sound-Generation mit Status-Anzeige  
 **Abhängigkeiten**: FEAT-003  
 **Assignee**: dashboard-feat-004
 
 ### FEAT-005: KI-Mission-Creator (ollama)
-**Status**: 🔴 To Do
-**Beschreibung**: KI-gestützte Erstellung von Missionen via Ollama API
+**Status**: 🟡 In Progress  
+**Beschreibung**: KI-gestützte Erstellung von Missionen via Ollama API  
 **Details**:
 - Stichpunkte eingeben → KI generiert Titel, Anrufertext, Sounds
 - KI schlägt passende Sounds vor
 - Direkt editierbar im Dashboard
-**Abhängigkeiten**: None
+**Abhängigkeiten**: None  
+**Assignee**: dashboard-feat-005
 
 ### FEAT-006: Mission-Editor
 **Status**: 🔴 To Do
