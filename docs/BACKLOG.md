@@ -139,6 +139,20 @@
 **Beschreibung**: Repo `kolawilk/einsatzsim-dashboard` anlegen
 **Assignee**: Lars
 
+### FEAT-015: API Key Management im Dashboard
+**Status**: 🟢 Done  
+**Beschreibung**: API Keys sicher im Dashboard hinterlegen und maskiert anzeigen  
+**Details**:
+- Settings-Seite für API Keys
+- ElevenLabs API Key
+- Freesound API Key
+- Ollama URL konfigurierbar
+- Keys werden maskiert angezeigt (z.B. "sk-...xxxx")
+- Sichere Speicherung (localStorage mit Verschlüsselung)
+- Test-Button um Keys zu validieren
+**Abhängigkeiten**: None  
+**Assignee**: dashboard-feat-015
+
 ## Notes
 
 - ElevenLabs API Key erforderlich für TTS-Funktionalität
