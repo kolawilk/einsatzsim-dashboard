@@ -1,0 +1,29 @@
+keywords:
+  - id: brand_1
+    name: "Brand 1"
+    type: "Feuerwehr"
+    default_alerting_sound: "alarm/brand_1.mp3"
+  - id: brand_2
+    name: "Brand 2"
+    type: "Feuerwehr"
+    default_alerting_sound: "alarm/brand_2.mp3"
+  - id: brand_3
+    name: "Brand 3"
+    type: "Feuerwehr"
+    default_alerting_sound: "alarm/brand_3.mp3"
+  - id: thl_vu
+    name: "THL Verkehrsunfall"
+    type: "THL"
+    default_alerting_sound: "alarm/thl_vu.mp3"
+  - id: thl_hg
+    name: "THL Höhenrettung"
+    type: "THL"
+    default_alerting_sound: "alarm/thl_hg.mp3"
+  - id: rettung_1
+    name: "Rettung 1"
+    type: "Rettungsdienst"
+    default_alerting_sound: "alarm/rettung_1.mp3"
+  - id: rettung_2
+    name: "Rettung 2"
+    type: "Rettungsdienst"
+    default_alerting_sound: "alarm/rettung_2.mp3"
